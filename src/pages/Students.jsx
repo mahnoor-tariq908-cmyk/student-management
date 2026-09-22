@@ -8,8 +8,8 @@ function SearchIcon() {
   return (
     <svg
       className="h-4 w-4"
-      fill="none"
       viewBox="0 0 24 24"
+      fill="none"
       stroke="currentColor"
       strokeWidth="1.8"
     >
@@ -17,41 +17,6 @@ function SearchIcon() {
       <path
         strokeLinecap="round"
         d="m20 20-4-4"
-      />
-    </svg>
-  );
-}
-
-function FilterIcon() {
-  return (
-    <svg
-      className="h-4 w-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth="1.8"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M4 6h16M7 12h10M10 18h4"
-      />
-    </svg>
-  );
-}
-
-function PlusIcon() {
-  return (
-    <svg
-      className="h-4 w-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth="1.8"
-    >
-      <path
-        strokeLinecap="round"
-        d="M12 5v14M5 12h14"
       />
     </svg>
   );
@@ -67,12 +32,12 @@ function Students() {
 
   const [search, setSearch] = useState("");
   const [courseFilter, setCourseFilter] = useState("All");
-  const [editingStudent, setEditingStudent] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [editingStudent, setEditingStudent] = useState(null);
 
-  const courses = [
-    ...new Set(students.map((student) => student.course)),
-  ];
+  const courses = useMemo(() => {
+    return [...new Set(students.map((student) => student.course))];
+  }, [students]);
 
   const filteredStudents = useMemo(() => {
     return students.filter((student) => {
@@ -102,14 +67,19 @@ function Students() {
   const handleEdit = (student) => {
     setEditingStudent(student);
     setShowForm(true);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   const handleDelete = (id) => {
-    const confirmDelete = window.confirm(
+    const confirmed = window.confirm(
       "Are you sure you want to delete this student?"
     );
 
-    if (confirmDelete) {
+    if (confirmed) {
       deleteStudent(id);
     }
   };
@@ -120,43 +90,54 @@ function Students() {
   };
 
   return (
-    <section className="min-h-screen bg-[#0B0B0B] px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-[1400px]">
+    <section className="min-h-screen w-full overflow-x-hidden bg-[#0B0B0B] px-3 py-6 sm:px-5 sm:py-8 lg:px-8">
+      <div className="mx-auto w-full max-w-[1400px]">
 
-        {/* Page Header */}
-        <div className="relative overflow-hidden rounded-[2rem] border border-white/[0.07] bg-gradient-to-br from-[#1D1111] via-[#171515] to-[#121212] p-6 shadow-2xl sm:p-8">
+        {/* Header */}
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
 
-          <div className="absolute -right-20 -top-24 h-72 w-72 rounded-full bg-[#C62828]/10 blur-3xl" />
+          <div className="min-w-0">
+            <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-[#E05A5A] sm:text-xs sm:tracking-[0.2em]">
+              Student Directory
+            </p>
 
-          <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <h1 className="mt-2 font-serif text-3xl italic leading-tight text-[#F5F5F5] sm:text-4xl md:text-5xl">
+              Manage your students.
+            </h1>
 
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E05A5A]">
-                Student Directory
-              </p>
-
-              <h1 className="mt-3 font-serif text-4xl italic text-[#F5F5F5] sm:text-5xl">
-                Manage your students.
-              </h1>
-
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-[#777777]">
-                Add, update, search and organize student records
-                from one simple workspace.
-              </p>
-            </div>
-
-            <button
-              onClick={() => {
-                setEditingStudent(null);
-                setShowForm(!showForm);
-              }}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#C62828] to-[#7D1D1D] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-[#C62828]/10 transition-all duration-300 hover:-translate-y-1 hover:from-[#E53935] hover:to-[#982222] hover:shadow-xl hover:shadow-[#C62828]/20 active:scale-95"
-            >
-              <PlusIcon />
-              {showForm ? "Close Form" : "Add Student"}
-            </button>
-
+            <p className="mt-2 max-w-xl text-xs leading-6 text-[#707070] sm:text-sm sm:leading-7">
+              Add, update, search and manage student records
+              from one organized place.
+            </p>
           </div>
+
+          <button
+            onClick={() => {
+              setEditingStudent(null);
+              setShowForm(!showForm);
+            }}
+            className="
+              inline-flex min-h-11 w-full shrink-0
+              items-center justify-center
+              rounded-xl
+              bg-gradient-to-r
+              from-[#C62828] to-[#7D1D1D]
+              px-5 py-3
+              text-xs font-semibold text-white
+              shadow-lg shadow-[#C62828]/10
+              transition-all duration-300
+              hover:-translate-y-1
+              hover:from-[#E53935]
+              hover:to-[#982222]
+              hover:shadow-xl
+              hover:shadow-[#C62828]/20
+              active:scale-95
+              sm:w-auto sm:text-sm
+            "
+          >
+            {showForm ? "Close Form" : "+ Add Student"}
+          </button>
+
         </div>
 
         {/* Form */}
@@ -174,21 +155,44 @@ function Students() {
         )}
 
         {/* Search & Filter */}
-        <div className="mt-6 rounded-3xl border border-white/[0.07] bg-[#151515] p-4 shadow-xl sm:p-5">
-
-          <div className="grid gap-3 lg:grid-cols-[1fr_260px_auto]">
+        <div
+          className="
+            mt-6
+            rounded-2xl
+            border border-white/[0.07]
+            bg-[#151515]
+            p-4
+            shadow-xl shadow-black/20
+            sm:rounded-3xl
+            sm:p-5
+          "
+        >
+          <div className="grid gap-3 md:grid-cols-[1fr_220px_auto]">
 
             {/* Search */}
-            <div className="relative">
-
-              <SearchIcon />
+            <div className="relative min-w-0">
 
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search student by name..."
-                className="w-full rounded-xl border border-white/[0.07] bg-[#0F0F0F] py-3 pl-10 pr-4 text-sm text-[#EEEEEE] outline-none transition-all duration-300 placeholder:text-[#555555] hover:border-white/[0.12] focus:border-[#C62828]/50 focus:bg-[#131313] focus:ring-2 focus:ring-[#C62828]/10"
+                className="
+                  w-full min-w-0
+                  rounded-xl
+                  border border-white/[0.07]
+                  bg-[#0F0F0F]
+                  py-3 pl-10 pr-4
+                  text-xs text-[#EEEEEE]
+                  outline-none
+                  transition-all duration-300
+                  placeholder:text-[#555555]
+                  hover:border-white/[0.12]
+                  focus:border-[#C62828]/50
+                  focus:ring-2
+                  focus:ring-[#C62828]/10
+                  sm:text-sm
+                "
               />
 
               <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#666666]">
@@ -197,77 +201,97 @@ function Students() {
 
             </div>
 
-            {/* Filter */}
-            <div className="relative">
+            {/* Course Filter */}
+            <select
+              value={courseFilter}
+              onChange={(e) => setCourseFilter(e.target.value)}
+              className="
+                w-full min-w-0
+                rounded-xl
+                border border-white/[0.07]
+                bg-[#0F0F0F]
+                px-3.5 py-3
+                text-xs text-[#DCDCDC]
+                outline-none
+                transition-all duration-300
+                hover:border-white/[0.12]
+                focus:border-[#C62828]/50
+                focus:ring-2
+                focus:ring-[#C62828]/10
+                sm:text-sm
+              "
+            >
+              <option value="All" className="bg-[#151515]">
+                All Courses
+              </option>
 
-              <div className="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-[#666666]">
-                <FilterIcon />
-              </div>
-
-              <select
-                value={courseFilter}
-                onChange={(e) => setCourseFilter(e.target.value)}
-                className="w-full appearance-none rounded-xl border border-white/[0.07] bg-[#0F0F0F] py-3 pl-10 pr-4 text-sm text-[#DCDCDC] outline-none transition-all duration-300 hover:border-white/[0.12] focus:border-[#C62828]/50 focus:ring-2 focus:ring-[#C62828]/10"
-              >
+              {courses.map((course) => (
                 <option
-                  value="All"
+                  key={course}
+                  value={course}
                   className="bg-[#151515]"
                 >
-                  All Courses
+                  {course}
                 </option>
-
-                {courses.map((course) => (
-                  <option
-                    key={course}
-                    value={course}
-                    className="bg-[#151515]"
-                  >
-                    {course}
-                  </option>
-                ))}
-              </select>
-
-            </div>
+              ))}
+            </select>
 
             {/* Clear */}
-            {(search || courseFilter !== "All") && (
-              <button
-                onClick={clearFilters}
-                className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-3 text-xs font-semibold text-[#999999] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C62828]/25 hover:bg-[#C62828]/10 hover:text-[#F08A8A] active:scale-95"
-              >
-                Clear Filters
-              </button>
-            )}
+            <button
+              onClick={clearFilters}
+              className="
+                min-h-11
+                rounded-xl
+                border border-white/[0.08]
+                bg-white/[0.03]
+                px-5 py-3
+                text-xs font-medium
+                text-[#999999]
+                transition-all duration-300
+                hover:-translate-y-0.5
+                hover:border-[#C62828]/25
+                hover:bg-[#C62828]/10
+                hover:text-[#F1F1F1]
+                active:scale-95
+                md:min-w-[100px]
+              "
+            >
+              Clear
+            </button>
 
           </div>
 
-          <div className="mt-4 flex items-center justify-between border-t border-white/[0.06] pt-4">
+          {/* Result Count */}
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.06] pt-4">
 
-            <p className="text-xs text-[#666666]">
+            <p className="text-[10px] text-[#666666] sm:text-xs">
               Showing{" "}
-              <span className="font-semibold text-[#D4D4D4]">
+              <span className="font-semibold text-[#C8C8C8]">
                 {filteredStudents.length}
               </span>{" "}
               of{" "}
-              <span className="font-semibold text-[#D4D4D4]">
+              <span className="font-semibold text-[#C8C8C8]">
                 {students.length}
               </span>{" "}
               students
             </p>
 
-            <div className="hidden items-center gap-2 sm:flex">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#E53935]" />
-              <span className="text-[10px] uppercase tracking-[0.15em] text-[#555555]">
-                Live Records
-              </span>
-            </div>
+            {(search || courseFilter !== "All") && (
+              <button
+                onClick={clearFilters}
+                className="text-[10px] font-semibold text-[#E05A5A] transition-colors hover:text-[#FF8585] sm:text-xs"
+              >
+                Reset filters
+              </button>
+            )}
 
           </div>
         </div>
 
-        {/* Student Cards */}
+        {/* Students Grid */}
         {filteredStudents.length > 0 ? (
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-6 grid grid-cols-1 gap-4 min-[520px]:grid-cols-2 xl:grid-cols-3 sm:gap-5">
+
             {filteredStudents.map((student) => (
               <StudentCard
                 key={student.id}
@@ -276,35 +300,63 @@ function Students() {
                 onDelete={handleDelete}
               />
             ))}
+
           </div>
         ) : (
           /* Empty State */
-          <div className="mt-6 rounded-[2rem] border border-white/[0.07] bg-[#151515] px-6 py-14 text-center shadow-xl">
-
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#C62828]/20 bg-[#C62828]/10 text-[#E05A5A]">
-              <SearchIcon />
+          <div
+            className="
+              mt-6
+              rounded-2xl
+              border border-white/[0.07]
+              bg-[#151515]
+              px-5 py-12
+              text-center
+              shadow-xl
+              sm:rounded-3xl
+              sm:px-8 sm:py-16
+            "
+          >
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#C62828]/20 bg-[#C62828]/10 text-xl text-[#E05A5A]">
+              ∅
             </div>
 
-            <h2 className="mt-5 font-serif text-2xl italic text-[#F0F0F0]">
+            <h2 className="mt-5 text-lg font-semibold text-[#E8E8E8] sm:text-xl">
               No students found
             </h2>
 
-            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#686868]">
-              Try a different name or course filter to find
-              the student you are looking for.
+            <p className="mx-auto mt-2 max-w-md text-xs leading-6 text-[#666666] sm:text-sm">
+              Try changing your search or course filter,
+              or add a new student record.
             </p>
 
             <button
-              onClick={clearFilters}
-              className="mt-5 rounded-xl bg-[#C62828]/10 px-4 py-2.5 text-xs font-semibold text-[#E05A5A] transition-all duration-300 hover:bg-[#C62828]/20 hover:text-[#FF9B9B] active:scale-95"
+              onClick={() => {
+                clearFilters();
+                setEditingStudent(null);
+                setShowForm(true);
+              }}
+              className="
+                mt-5
+                rounded-xl
+                bg-gradient-to-r
+                from-[#C62828] to-[#7D1D1D]
+                px-5 py-3
+                text-xs font-semibold text-white
+                transition-all duration-300
+                hover:-translate-y-1
+                hover:from-[#E53935]
+                hover:to-[#982222]
+                active:scale-95
+                sm:text-sm
+              "
             >
-              Reset Search
+              Add New Student
             </button>
-
           </div>
         )}
 
-        <div className="h-10" />
+        <div className="h-8 sm:h-12" />
 
       </div>
     </section>
@@ -312,4 +364,3 @@ function Students() {
 }
 
 export default Students;
-

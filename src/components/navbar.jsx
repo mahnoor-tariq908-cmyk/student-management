@@ -61,84 +61,94 @@ function InfoIcon() {
 
 function Navbar() {
   const navStyle = ({ isActive }) =>
-    `group relative flex items-center gap-2 rounded-xl px-3 py-2.5 text-xs font-medium transition-all duration-300 sm:px-4 sm:text-sm ${
+    `group flex items-center justify-center gap-1.5 rounded-xl px-2.5 py-2.5 text-[11px] font-medium transition-all duration-300 active:scale-95 sm:gap-2 sm:px-3.5 sm:text-xs lg:px-4 lg:py-2.5 lg:text-sm ${
       isActive
         ? "bg-[#C62828]/15 text-[#F08A8A] shadow-sm shadow-[#C62828]/10"
         : "text-[#8A8A8A] hover:bg-white/[0.05] hover:text-[#F5F5F5]"
     }`;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-[#0B0B0B]/95 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
-
+    <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#0B0B0B]/95 backdrop-blur-xl">
+      <div
+        className="
+          mx-auto flex w-full max-w-[1400px]
+          items-center justify-between
+          gap-2 px-3 py-2.5
+          sm:gap-4 sm:px-5 sm:py-3
+          lg:px-8
+        "
+      >
         {/* Logo */}
         <NavLink
           to="/"
-          className="group flex shrink-0 items-center gap-3"
+          className="group flex min-w-0 shrink-0 items-center gap-2 sm:gap-3"
         >
-          <div className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-[#C62828]/30 bg-gradient-to-br from-[#3A1111] to-[#171111] shadow-lg transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-[#E53935]/60 group-hover:shadow-[#C62828]/10">
-
-            <div className="absolute h-5 w-5 rounded-full border border-[#E53935]/50" />
+          {/* Logo Icon */}
+          <div
+            className="
+              relative flex h-9 w-9 shrink-0
+              items-center justify-center
+              rounded-xl
+              border border-[#C62828]/30
+              bg-gradient-to-br from-[#3A1111] to-[#171111]
+              shadow-lg
+              transition-all duration-300
+              group-hover:-translate-y-0.5
+              group-hover:border-[#E53935]/60
+              group-hover:shadow-[#C62828]/10
+              sm:h-10 sm:w-10
+            "
+          >
+            <div className="absolute h-4 w-4 rounded-full border border-[#E53935]/50 sm:h-5 sm:w-5" />
 
             <div className="h-1.5 w-1.5 rounded-full bg-[#E53935]" />
-
           </div>
 
-          <div className="hidden sm:block">
-            <h1 className="font-serif text-[18px] font-semibold tracking-tight text-[#F5F5F5]">
+          {/* Logo Text */}
+          <div className="hidden min-w-0 sm:block">
+            <h1 className="font-serif text-[17px] font-semibold tracking-tight text-[#F5F5F5] sm:text-[18px]">
               Stude
-              <span className="text-[15px] text-[#E53935]">
+              <span className="text-[14px] text-[#E53935] sm:text-[15px]">
                 n
               </span>
               t<span className="text-[#E53935]">Hub</span>
             </h1>
 
-            <p className="mt-0.5 text-[8px] font-medium uppercase tracking-[0.22em] text-[#666666]">
+            <p className="mt-0.5 text-[7px] font-medium uppercase tracking-[0.18em] text-[#666666] sm:text-[8px] sm:tracking-[0.22em]">
               Student Management
             </p>
           </div>
         </NavLink>
 
         {/* Navigation */}
-        <nav className="flex items-center gap-1 rounded-2xl border border-white/[0.07] bg-[#151515] p-1">
-
-          <NavLink
-            to="/"
-            end
-            className={navStyle}
-          >
+        <nav
+          className="
+            flex shrink-0 items-center
+            gap-0.5 rounded-2xl
+            border border-white/[0.07]
+            bg-[#151515] p-1
+            sm:gap-1
+          "
+        >
+          <NavLink to="/" end className={navStyle}>
             <HomeIcon />
-            <span className="hidden sm:inline">
-              Dashboard
-            </span>
+            <span className="hidden md:inline">Dashboard</span>
           </NavLink>
 
-          <NavLink
-            to="/students"
-            className={navStyle}
-          >
+          <NavLink to="/students" className={navStyle}>
             <StudentsIcon />
-            <span className="hidden sm:inline">
-              Students
-            </span>
+            <span className="hidden md:inline">Students</span>
           </NavLink>
 
-          <NavLink
-            to="/about"
-            className={navStyle}
-          >
+          <NavLink to="/about" className={navStyle}>
             <InfoIcon />
-            <span className="hidden sm:inline">
-              About
-            </span>
+            <span className="hidden md:inline">About</span>
           </NavLink>
-
         </nav>
 
         {/* Profile */}
-        <div className="flex items-center gap-2 sm:gap-3">
-
-          <div className="hidden text-right md:block">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <div className="hidden text-right lg:block">
             <p className="text-xs font-semibold text-[#E8E8E8]">
               Mahnoor
             </p>
@@ -148,15 +158,28 @@ function Navbar() {
             </p>
           </div>
 
-          <div className="flex h-9 w-9 items-center justify-center rounded-full border border-[#C62828]/30 bg-gradient-to-br from-[#C62828] to-[#721818] text-xs font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-[#C62828]/20">
+          <div
+            className="
+              flex h-8 w-8 shrink-0
+              items-center justify-center
+              rounded-full
+              border border-[#C62828]/30
+              bg-gradient-to-br from-[#C62828] to-[#721818]
+              text-[11px] font-bold text-white
+              shadow-lg
+              transition-all duration-300
+              hover:scale-105
+              hover:shadow-[#C62828]/20
+              sm:h-9 sm:w-9 sm:text-xs
+            "
+          >
             M
           </div>
-
         </div>
-
       </div>
     </header>
   );
 }
 
 export default Navbar;
+
